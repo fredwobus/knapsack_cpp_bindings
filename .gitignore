@@ -14,3 +14,6 @@ __pycache__
 /pyknapsack.cpython-311-x86_64-linux-gnu.so
 /run_knapsack
 /tmp/*.o
+/pyknapsack.egg-info/
+/dist/pyknapsack-*-py*-*-*.egg
+/Testing/Temporary/
