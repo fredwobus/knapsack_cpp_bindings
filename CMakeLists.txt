@@ -14,8 +14,8 @@ target_include_directories(knapsack PRIVATE .)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_executable(main_knapsack_cpp main_knapsack.cpp)
-target_link_libraries(main_knapsack_cpp PRIVATE knapsack)
+add_executable(run_knapsack run_knapsack.cpp)
+target_link_libraries(run_knapsack PRIVATE knapsack)
 
 add_subdirectory(pybind11)
 pybind11_add_module(pyknapsack pyknapsack.cpp)
