@@ -5,6 +5,7 @@ __pycache__
 /CMakeFiles/
 /cmake_install.cmake
 /cmake-build-debug/
+/cmake-build-release/
 /CMakeCache.txt
 /Makefile
 /knapsack.cbp
