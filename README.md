@@ -26,6 +26,6 @@ python3 setup.py build_ext install
 
 ## Run the python example
 ```shell
-python3 run_pyknapsack
+python3 run_pyknapsack.py
 ```
 
