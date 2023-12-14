@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ```shell
 cmake .
 make
-python3 setup.py build_ext
+python3 setup.py build_ext install
 ```
 
 ## Run the C++-native example
