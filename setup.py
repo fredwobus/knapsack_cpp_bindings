@@ -1,8 +1,11 @@
+import os
 import sys
+from pathlib import Path
 
 import setuptools
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext
+from distutils.dist import Distribution
 
 __version__ = '0.0.1'
 
@@ -67,6 +70,47 @@ class BuildExt(build_ext):
         c_opts['unix'] += darwin_opts
         l_opts['unix'] += darwin_opts
 
+    def run(self):
+        for ext in self.extensions:
+            self.build_cmake(ext)
+        super().run()
+
+    def build_cmake(self, ext):
+        """
+        See https://stackoverflow.com/a/48015772
+        """
+        cwd = Path().absolute()
+
+        # these dirs will be created in build_py, so if you don't have
+        # any python sources to bundle, the dirs will be missing
+        build_temp = Path(self.build_temp)
+        build_temp.mkdir(parents=True, exist_ok=True)
+        ext_name = Path(self.get_ext_fullpath(ext.name))
+        ext_name.parent.mkdir(parents=True, exist_ok=True)
+
+        # example of cmake args
+        config = 'Debug' if self.debug else 'Release'
+        cmake_args = [
+            '-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=' + str(ext_name.parent.absolute()),
+            '-DCMAKE_BUILD_TYPE=' + config
+        ]
+
+        # example of build args
+        build_args = [
+            '--config', config,
+            '--', '-j4'
+        ]
+
+        os.chdir(str(build_temp))
+        print(f"RUN: {['cmake', str(cwd)] + cmake_args}")
+        self.spawn(['cmake', str(cwd)] + cmake_args)
+        if not self.dry_run:
+            print(f"RUN: {['cmake', '--build', '.'] + build_args}")
+            self.spawn(['cmake', '--build', '.'] + build_args)
+        # Troubleshooting: if fail on line above then delete all possible 
+        # temporary CMake files including "CMakeCache.txt" in top level dir.
+        os.chdir(str(cwd))
+
     def build_extensions(self):
         ct = self.compiler.compiler_type
         opts = self.c_opts.get(ct, [])
@@ -87,7 +131,9 @@ class BuildExt(build_ext):
 ext_modules = [
     Extension(
         'pyknapsack',
-        ['knapsack.cpp', 'pyknapsack.cpp'],
+        ["knapsack.cpp", "pyknapsack.cpp"],
+        packages=["pyknapsack"],
+        ext_modules=[BuildExt(Distribution())],
         include_dirs=[
             ".",
             # Path to pybind11 headers
@@ -104,6 +150,7 @@ setup(
     author='Fred Wobus',
     author_email='f.wobus@exeter.ac.uk',
     description='Naive knapsack solver',
+    url="https://github.com/fredwobus/knapsack_cpp_bindings",
     long_description='',
     ext_modules=ext_modules,
     install_requires=['pybind11>=2.4'],
