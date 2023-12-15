@@ -19,3 +19,4 @@ __pycache__
 /pyknapsack.egg-info/
 /dist/pyknapsack-*-py*-*-*.egg
 /Testing/Temporary/
+/.eggs/
