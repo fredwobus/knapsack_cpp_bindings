@@ -2,6 +2,13 @@
 > python bindings to a knapsack library with a naive knapsack solver as an example
 
 
+## Prerequisites
+
+Install **cmake**:
+```shell
+sudo apt install cmake
+```
+
 ## Create Python virtual environment
 
 ```shell
