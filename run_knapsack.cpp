@@ -1,10 +1,16 @@
-#include <bits/stdc++.h> 
+#include <iostream>
 #include "knapsack.hpp"
 
-using namespace std; 
+// Example executable with sample input which uses the libknapsack library from C++ natively
+// To compile, use the accompanying CMake definition file "CMakeLists.txt"
+//      $ cmake .
+//      $ cmake --build .
+// To run the executable:
+//      $ ./run_knapsack
 
-// Driver code 
-int main() 
+using namespace std;
+
+int main()
 { 
 	int profit[] = { 60, 90, 120, 80 }; 
 	int weight[] = { 10, 20, 30, 15 }; 
